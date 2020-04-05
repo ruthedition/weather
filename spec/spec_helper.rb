@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "weather"
+require "cli"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -10,5 +10,16 @@ RSpec.configure do |config|
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
+  end
+end
+
+def capture_puts
+  begin
+    old_stdout = $stdout
+    $stdout = StringIO.new('','w')
+    yield
+    $stdout.string
+  ensure
+    $stdout = old_stdout
   end
 end

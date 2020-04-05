@@ -7,7 +7,7 @@
 /spec/reports/
 /tmp/
 NOTES.md
-
+/.env
 # rspec failure tracking
 .rspec_status
 .DS_Store

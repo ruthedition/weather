@@ -1,4 +1,4 @@
-require_relative 'lib/weather/version'
+require_relative 'config/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "weather"
