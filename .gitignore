@@ -6,6 +6,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+NOTES.md
 
 # rspec failure tracking
 .rspec_status
+.DS_Store
