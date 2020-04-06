@@ -3,10 +3,13 @@ RSpec.describe CLI do
   describe "#call" do 
     cli = CLI.new
     zip = "75024"
+    forecast = Forecast.new("76", "73", "65", "80", "45")
     
     before do 
+      allow(API).to receive(:get_forecast).and_return(forecast)
       allow($stdout).to receive(:puts)      
       allow(cli).to receive(:gets).and_return("#{zip}\n")
+      allow(cli).to receive(:print_weather)
     end 
 
     it "outputs a greeting" do
@@ -24,15 +27,25 @@ RSpec.describe CLI do
       cli.call
     end
 
-    it "calls #get_weather if zipcode is valid" do 
-      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(true)
-      expect(cli).to receive(:get_weather).with(zip)
+    it "calls #get_forecast if zipcode is valid" do 
+      expect(API).to receive(:get_forecast).with(zip)
       cli.call
     end 
 
-    it "does not call #get_weather if zipcode is not valid" do 
+    it "does not call #get_forecast if zipcode is not valid" do 
       allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-      expect(cli).not_to receive(:get_weather)
+      expect(API).not_to receive(:get_forecast)
+      cli.call
+    end 
+
+    it "calls #print_weather if forecast is valid" do 
+      expect(cli).to receive(:print_weather).with(forecast)
+      cli.call
+    end 
+
+    it "does not call #print_weather if forecast is not valid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+      expect(cli).not_to receive(:print_weather)
       cli.call
     end 
 
@@ -55,15 +68,18 @@ RSpec.describe CLI do
     end 
   end 
 
-  describe "#get_weather" do 
+  describe "#print_weather" do 
     cli = CLI.new
-    forecast = Forecast.new
-    zip = 75035
+    forecast = Forecast.new("76", "73", "65", "80", "45")
 
     it "outputs the current temperature and what it feels like " do 
-      output = capture_puts{ cli.get_weather }
-      allow(API).to receive(:get_forecast).with(zip).and_return(forecast)
+      output = capture_puts{ cli.print_weather(forecast) }
       expect(output).to include("The temperature today is 76, but it feels like 73.")
+    end 
+
+    it "outputs the lowest and highest temperature for the day" do 
+      output = capture_puts{ cli.print_weather(forecast) }
+      expect(output).to include("The low for today is 65, and the high today is 80.")
     end 
   end 
 
