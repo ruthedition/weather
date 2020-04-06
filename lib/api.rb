@@ -1,5 +1,5 @@
 require 'httparty'
-require 'pry'
+require_relative "./forecast"
 require 'json'
 
 class API
@@ -11,14 +11,11 @@ class API
     return Forecast.new(response[:temp], response[:feels_like], response[:temp_min], response[:temp_max], response[:humidity])
   end 
 
-  def weather_format(zipcode)
+  def self.weather_format(zipcode)
     params = {zip: zipcode, appid: ENV["API_KEY"], units: "imperial"}
-    og_response = HTTParty.get(BASE_URL, query: params)
+    response = HTTParty.get(BASE_URL, query: params)
     JSON.parse(response.body, symbolize_names: true)[:main]
   end 
-
-  
-
 end
 
 

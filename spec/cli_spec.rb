@@ -19,7 +19,7 @@ RSpec.describe CLI do
 
     it "outputs a prompt" do
       output = capture_puts{ cli.call }
-      expect(output).to include("Please enter a zip code for the forecast in that area > ")
+      expect(output).to include("Please enter your zipcode. > ")
     end 
 
     it "calls #valid_zipcode? with user input" do 
@@ -27,27 +27,54 @@ RSpec.describe CLI do
       cli.call
     end
 
-    it "calls #get_forecast if zipcode is valid" do 
-      expect(API).to receive(:get_forecast).with(zip)
+    it "calls #display_menu if zipcode is valid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(true)
+      # allow(cli).to receive(:menu)
+      expect(cli).to receive(:display_menu)
       cli.call
     end 
 
-    it "does not call #get_forecast if zipcode is not valid" do 
+    it "does not call #display_menu if zipcode is invalid" do 
       allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-      expect(API).not_to receive(:get_forecast)
+      expect(cli).not_to receive(:display_menu)
+      cli.call
+    end
+
+    it "calls #handle_menu_input if zipcode is valid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(true)
+      allow(cli).to receive(:handle_menu_input)
+      expect(cli).to receive(:handle_menu_input)
       cli.call
     end 
-
-    it "calls #print_weather if forecast is valid" do 
-      expect(cli).to receive(:print_weather).with(forecast)
-      cli.call
-    end 
-
-    it "does not call #print_weather if forecast is not valid" do 
+    
+    it "does not calls #handle_menu_input if zipcode is invalid" do 
       allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-      expect(cli).not_to receive(:print_weather)
+      expect(cli).not_to receive(:handle_menu_input)
       cli.call
     end 
+
+    # it "calls #get_forecast if zipcode is valid" do 
+    #   expect(API).to receive(:get_forecast).with(zip)
+    #   cli.call
+    # end 
+
+    # it "does not call #get_forecast if zipcode is not valid" do 
+    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+    #   expect(API).not_to receive(:get_forecast)
+    #   cli.call
+    # end 
+
+    
+    # it "calls #print_weather if forecast is valid" do 
+    #   expect(cli).to receive(:print_weather).with(forecast)
+    #   cli.call
+    # end 
+
+    # it "does not call #print_weather if forecast is not valid" do 
+    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+    #   expect(cli).not_to receive(:print_weather)
+    #   cli.call
+    # end 
 
   end 
 
@@ -67,6 +94,35 @@ RSpec.describe CLI do
       expect(cli.valid_zipcode?("2")).to eq(false)
     end 
   end 
+
+  describe "#display_menu" do 
+
+    it "outputs the menu option today's temperature" do 
+      cli = CLI.new
+      output = capture_puts{ cli.display_menu }
+      expect(output).to include("1. The temperature for today.")
+    end
+
+    it "outputs the menu option for today's lows and highs" do 
+      cli = CLI.new
+      output = capture_puts{ cli.display_menu }
+      expect(output).to include("2. The highs and lows for today.")
+    end 
+
+    it "outputs the menu option for today's humidity" do 
+      cli = CLI.new
+      output = capture_puts{ cli.display_menu }
+      expect(output).to include("3. The humidity today.")
+    end 
+
+    it "outputs the menu option for everything about the weather today" do 
+      cli = CLI.new
+      output = capture_puts{ cli.display_menu }
+      expect(output).to include("4. Everything for today's forecast.")
+    end 
+  end 
+
+  
 
   describe "#print_weather" do 
     cli = CLI.new
