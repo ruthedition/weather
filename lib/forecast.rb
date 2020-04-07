@@ -12,15 +12,15 @@ class Forecast
   end
 
   def print_temperature
-    puts "The temperature today is #{temperature}, but it feels like #{feels_like}." 
+    puts "The temperature today is #{temperature}, but it feels like #{feels_like}.\n\n"
   end 
 
   def print_temp_range
-    puts "The low for today is #{lowest_temperature}, and the high today is #{highest_temperature}."
+    puts "\nThe low for today is #{lowest_temperature}, and the high today is #{highest_temperature}.\n\n"
   end 
 
   def print_humidity
-    puts "The humidity today is #{humidity}."
+    puts "\nThe humidity today is #{humidity}.\n\n"
   end 
 
   def print_everything
