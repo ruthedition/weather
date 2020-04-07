@@ -8,28 +8,32 @@ class CLI
   end 
 
   def enter_zipcode
-    puts "Please enter your zipcode. > "
+    puts "Please enter your zipcode. >"
+    gets.strip
   end 
 
   def call
     greeting
-    enter_zipcode
-    zipcode = gets.strip
-    valid_zipcode?(zipcode)
-  end 
-
-  def valid_zipcode?(zipcode)
-    if zipcode.length == 5
+    zipcode = enter_zipcode
+    if valid_zipcode?(zipcode)
       display_menu
       handle_menu_input(zipcode)
     else 
-      puts "Invalid zipcode. Please enter valid zipcode >"
-      zipcode = gets.strip
-      valid_zipcode?(zipcode)    
-    end 
+      invalid_zipcode_response   
+    end   
+  end 
 
+  def valid_zipcode?(zipcode)
+    zipcode.length == 5
   end 
   
+  def invalid_zipcode_response
+    puts "Invalid zipcode. Please enter your zipcode."
+    zipcode = enter_zipcode
+    valid_zipcode?(zipcode)
+  end 
+
+
   def display_menu
     puts "\n1. The temperature for today."
     puts "2. The highs and lows for today."
