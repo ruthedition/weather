@@ -19,9 +19,7 @@ class CLI
   end 
 
   def valid_zipcode?(zipcode)
-    zip = zipcode.to_i.to_s
-    zip.length == 5 
-   
+    zipcode.length == 5 
   end 
   
   def invalid_zipcode_response
@@ -63,5 +61,4 @@ class CLI
   end 
 
 end 
-
 
