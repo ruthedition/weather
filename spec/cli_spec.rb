@@ -1,9 +1,9 @@
-RSpec.describe CLI do
+RSpec.describe Weather::CLI do
 
   describe "#call" do 
-    cli = CLI.new
+    cli = Weather::CLI.new
     zip = "75024"
-    forecast = Forecast.new("76", "73", "65", "80", "45")
+    forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
     
     before do 
       allow($stdout).to receive(:puts)      
@@ -27,39 +27,6 @@ RSpec.describe CLI do
       expect(cli).to receive(:validate_zipcode)
       cli.call
     end 
-
-    # it "calls #valid_zipcode? with user input" do 
-    #   expect(cli).to receive(:valid_zipcode?).with(zip)
-    #   cli.call
-    # end
-
-    # it "calls #display_menu if zipcode is valid" do 
-    #   expect(cli).to receive(:display_menu)
-    #   cli.call
-    # end 
-
-    # it "does not call #display_menu if zipcode is invalid" do 
-    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-    #   expect(cli).not_to receive(:display_menu)
-    #   cli.call
-    # end
-
-    # it "calls #handle_menu_input if zipcode is valid" do 
-    #   expect(cli).to receive(:handle_menu_input).with(zip)
-    #   cli.call
-    # end 
-    
-    # it "does not calls #handle_menu_input if zipcode is invalid" do 
-    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-    #   expect(cli).not_to receive(:handle_menu_input)
-    #   cli.call
-    # end 
-
-    # it "calls #invalid_zipcode_response if zipcode is invalid" do 
-    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-    #   expect(cli).to receive(:invalid_zipcode_response)
-    #   cli.call
-    # end 
   end 
 
   describe "#greeting" do 
@@ -69,14 +36,14 @@ RSpec.describe CLI do
     end 
     
     it "outputs a greeting" do
-      cli = CLI.new
+      cli = Weather::CLI.new
       output = capture_puts{ cli.greeting }
       expect(output).to include("Welcome to Weather Today")
     end
   end 
 
   describe "#enter_zipcode" do
-    cli = CLI.new
+    cli = Weather::CLI.new
     before do 
       allow($stdout).to receive(:puts)  
       allow(cli).to receive(:gets).and_return("zip")    
@@ -93,7 +60,7 @@ RSpec.describe CLI do
   end
 
   describe "#valid_zipcode?(zipcode)" do 
-    cli = CLI.new
+    cli = Weather::CLI.new
     zip = "75028"
     
     it "zipcode is equal to 5 digits" do 
@@ -110,7 +77,7 @@ RSpec.describe CLI do
   end 
 
   describe "#invalid_zipcode_response" do 
-    cli = CLI.new
+    cli = Weather::CLI.new
     zip = "75024"
     
     before do 
@@ -137,7 +104,7 @@ RSpec.describe CLI do
   end 
 
   describe "#validate_zipcode" do
-    cli = CLI.new
+    cli = Weather::CLI.new
     zip = "75024"
     
     before do 
@@ -187,7 +154,7 @@ RSpec.describe CLI do
   end 
 
   describe "#display_menu" do 
-    cli = CLI.new
+    cli = Weather::CLI.new
 
     before do 
       allow($stdout).to receive(:puts)  
@@ -210,25 +177,25 @@ RSpec.describe CLI do
     end 
 
     it "outputs the menu option for everything about the weather today" do 
-      cli = CLI.new
+      cli = Weather::CLI.new
       output = capture_puts{ cli.display_menu }
       expect(output).to include("4. Everything for today's forecast.")
     end 
   end 
   
   describe "#handle_menu_input" do
-    cli = CLI.new
-    forecast = Forecast.new("76", "73", "65", "80", "45")
+    cli = Weather::CLI.new
+    forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
     zip = "75024"
 
     before do 
       allow($stdout).to receive(:puts)
-      allow(API).to receive(:get_forecast).and_return(forecast)
+      allow(Weather::API).to receive(:get_forecast).and_return(forecast)
     end 
 
     it "calls #get_forecast after user selection" do 
       allow(cli).to receive(:gets).and_return("1","5")
-      expect(API).to receive(:get_forecast).with(zip)
+      expect(Weather::API).to receive(:get_forecast).with(zip)
       cli.handle_menu_input(zip)
     end 
     

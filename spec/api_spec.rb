@@ -1,4 +1,4 @@
-RSpec.describe API do
+RSpec.describe Weather::API do
 
   describe "#get_forecast" do 
 
@@ -10,8 +10,8 @@ RSpec.describe API do
         temp_max: 284.26,
         humidity: 100
       }
-      allow(API).to receive(:weather_format).and_return(response_body)
-      forecast = API.get_forecast("75024")
+      allow(Weather::API).to receive(:weather_format).and_return(response_body)
+      forecast = Weather::API.get_forecast("75024")
       expect(forecast.temperature).to eq(282.55)
     end 
 

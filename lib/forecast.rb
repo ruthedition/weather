@@ -1,5 +1,5 @@
 
-class Forecast
+class Weather::Forecast
 
   attr_reader :temperature, :feels_like, :lowest_temperature, :highest_temperature, :humidity
 

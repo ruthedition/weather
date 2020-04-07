@@ -2,4 +2,4 @@
 require "./config/version"
 require "./config/environment.rb"
 
-CLI.new.call
+Weather::CLI.new.call

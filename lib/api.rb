@@ -2,13 +2,13 @@ require 'httparty'
 require_relative "./forecast"
 require 'json'
 
-class API
+class Weather::API
 
   BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
   def self.get_forecast(zipcode)
     response = weather_format(zipcode)
-    return Forecast.new(response[:temp], response[:feels_like], response[:temp_min], response[:temp_max], response[:humidity])
+    return Weather::Forecast.new(response[:temp], response[:feels_like], response[:temp_min], response[:temp_max], response[:humidity])
   end 
 
   def self.weather_format(zipcode)

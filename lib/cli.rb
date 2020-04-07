@@ -1,7 +1,7 @@
 require_relative "./api.rb"
 require 'pry'
 
-class CLI
+class Weather::CLI
 
   def greeting
     puts "Welcome to Weather Today!\n\n"
@@ -47,7 +47,7 @@ class CLI
 
   def handle_menu_input(zipcode)
     input = gets.strip
-    forecast = API.get_forecast(zipcode)
+    forecast = Weather::API.get_forecast(zipcode)
     forecast.print_temperature if input == "1"
     forecast.print_temp_range if input == "2"
     forecast.print_humidity if input == "3"
