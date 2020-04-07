@@ -15,6 +15,22 @@ class CLI
   def call
     greeting
     zipcode = enter_zipcode
+    validate_zipcode(zipcode)
+  end 
+
+  def valid_zipcode?(zipcode)
+    zip = zipcode.to_i.to_s
+    zip.length == 5 
+   
+  end 
+  
+  def invalid_zipcode_response
+    puts "Invalid zipcode."
+    zipcode = enter_zipcode
+    validate_zipcode(zipcode)
+  end 
+
+  def validate_zipcode(zipcode)
     if valid_zipcode?(zipcode)
       display_menu
       handle_menu_input(zipcode)
@@ -22,17 +38,6 @@ class CLI
       invalid_zipcode_response   
     end   
   end 
-
-  def valid_zipcode?(zipcode)
-    zipcode.length == 5
-  end 
-  
-  def invalid_zipcode_response
-    puts "Invalid zipcode. Please enter your zipcode."
-    zipcode = enter_zipcode
-    valid_zipcode?(zipcode)
-  end 
-
 
   def display_menu
     puts "\n1. The temperature for today."

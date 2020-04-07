@@ -6,10 +6,9 @@ RSpec.describe CLI do
     forecast = Forecast.new("76", "73", "65", "80", "45")
     
     before do 
-      allow(API).to receive(:get_forecast).and_return(forecast)
       allow($stdout).to receive(:puts)      
       allow(cli).to receive(:enter_zipcode).and_return(zip)
-      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(true)
+      allow(cli).to receive(:validate_zipcode).with(zip)
       allow(cli).to receive(:display_menu)
       allow(cli).to receive(:handle_menu_input)
     end 
@@ -24,38 +23,43 @@ RSpec.describe CLI do
       cli.call
     end
 
-    it "calls #valid_zipcode? with user input" do 
-      expect(cli).to receive(:valid_zipcode?).with(zip)
-      cli.call
-    end
-
-    it "calls #display_menu if zipcode is valid" do 
-      expect(cli).to receive(:display_menu)
+    it "calls #validate_zipcode" do 
+      expect(cli).to receive(:validate_zipcode)
       cli.call
     end 
 
-    it "does not call #display_menu if zipcode is invalid" do 
-      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-      expect(cli).not_to receive(:display_menu)
-      cli.call
-    end
+    # it "calls #valid_zipcode? with user input" do 
+    #   expect(cli).to receive(:valid_zipcode?).with(zip)
+    #   cli.call
+    # end
 
-    it "calls #handle_menu_input if zipcode is valid" do 
-      expect(cli).to receive(:handle_menu_input).with(zip)
-      cli.call
-    end 
+    # it "calls #display_menu if zipcode is valid" do 
+    #   expect(cli).to receive(:display_menu)
+    #   cli.call
+    # end 
+
+    # it "does not call #display_menu if zipcode is invalid" do 
+    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+    #   expect(cli).not_to receive(:display_menu)
+    #   cli.call
+    # end
+
+    # it "calls #handle_menu_input if zipcode is valid" do 
+    #   expect(cli).to receive(:handle_menu_input).with(zip)
+    #   cli.call
+    # end 
     
-    it "does not calls #handle_menu_input if zipcode is invalid" do 
-      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-      expect(cli).not_to receive(:handle_menu_input)
-      cli.call
-    end 
+    # it "does not calls #handle_menu_input if zipcode is invalid" do 
+    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+    #   expect(cli).not_to receive(:handle_menu_input)
+    #   cli.call
+    # end 
 
-    it "calls #invalid_zipcode_response if zipcode is invalid" do 
-      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
-      expect(cli).to receive(:invalid_zipcode_response)
-      cli.call
-    end 
+    # it "calls #invalid_zipcode_response if zipcode is invalid" do 
+    #   allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+    #   expect(cli).to receive(:invalid_zipcode_response)
+    #   cli.call
+    # end 
   end 
 
   describe "#greeting" do 
@@ -90,62 +94,95 @@ RSpec.describe CLI do
 
   describe "#valid_zipcode?(zipcode)" do 
     cli = CLI.new
-    zip = "75024"
+    zip = "75028"
     
-    it "checks if zipcode is equal to 5 digits" do 
-      allow(cli).to receive(:gets).and_return("#{zip}\n")
-      expect(
-      
+    it "zipcode is equal to 5 digits" do 
+      expect(cli.valid_zipcode?(zip)).to eq(true)
     end 
-    
-    # it "calls #display_menu if zipcode is 5 digits" do
-    #   expect(cli).to receive(:display_menu)
-    #   cli.valid_zipcode?(zip)
 
-    # end 
+    it "zipcode is less than 5 digits" do 
+      expect(cli.valid_zipcode?("5224242")).to eq(false)
+    end 
 
-    # it "does not call #display_menu if zipcode is not 5 digits" do
-    #   expect(cli).not_to receive(:display_menu)
-    #   cli.valid_zipcode?("34353453453")
-    # end 
-
-    # it "calls #handle_menu_input(zipcode) if zipcode is 5 digits" do
-    #   expect(cli).to receive(:handle_menu_input).with(zip)
-    #   cli.valid_zipcode?(zip)
-    # end 
-
-    # it "does not call #handle_menu_input if zipcode is not 5 digits" do
-    #   expect(cli).not_to receive(:handle_menu_input)
-    #   cli.valid_zipcode?("32252534")
-    # end 
+    it "zipcode is less than 5 digits" do 
+      expect(cli.valid_zipcode?("1")).to eq(false)
+    end
   end 
 
   describe "#invalid_zipcode_response" do 
     cli = CLI.new
     zip = "75024"
-    output = capture_puts{ cli.invalid_zipcode_response }
+    
+    before do 
+      allow($stdout).to receive(:puts)  
+      allow(cli).to receive(:enter_zipcode).and_return(zip)    
+      allow(cli).to receive(:validate_zipcode)
+    end
+
+
+    it "outputs warning zipcode is invalid, and asks for zipcode again" do
+      output = capture_puts{ cli.invalid_zipcode_response }
+      expect(output).to eq("Invalid zipcode.\n")
+    end 
+
+    it "calls #enter_zipcode for new zipcode" do
+      expect(cli).to receive(:enter_zipcode)
+      cli.invalid_zipcode_response
+    end 
+
+    it "calls #valid_zipcode? with user input" do
+      expect(cli).to receive(:validate_zipcode).with(zip)
+      cli.invalid_zipcode_response
+    end 
+  end 
+
+  describe "#validate_zipcode" do
+    cli = CLI.new
+    zip = "75024"
     
     before do 
       allow($stdout).to receive(:puts)  
       allow(cli).to receive(:gets).and_return(zip)
       allow(cli).to receive(:enter_zipcode)    
       allow(cli).to receive(:valid_zipcode?)
+      allow(cli).to receive(:display_menu)
+      allow(cli).to receive(:handle_menu_input)
+      allow(cli).to receive(:invalid_zipcode_response)
     end
 
-
-    it "outputs warning zipcode is invalid, and asks for zipcode again" do
-      output = capture_puts{ cli.invalid_zipcode_response }
-      expect(output).to eq("Invalid zipcode. Please enter your zipcode.\n")
-    end 
-
-    it "calls #enter_zipcode for new zipcode" do
-      expect(cli).to receive(:enter_zipcode)
-      cli.enter_zipcode
-    end 
-
-    it "calls #valid_zipcode? with user input" do
+    it "calls #valid_zipcode? with user input" do 
       expect(cli).to receive(:valid_zipcode?).with(zip)
-      cli.valid_zipcode?(zip)
+      cli.validate_zipcode(zip)
+    end
+
+    it "calls #display_menu if zipcode is valid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(true)
+      expect(cli).to receive(:display_menu)
+      cli.validate_zipcode(zip)
+    end 
+
+    it "does not call #display_menu if zipcode is invalid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+      expect(cli).not_to receive(:display_menu)
+      cli.validate_zipcode(zip)
+    end
+
+    it "calls #handle_menu_input if zipcode is valid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(true)
+      expect(cli).to receive(:handle_menu_input).with(zip)
+      cli.validate_zipcode(zip)
+    end 
+
+    it "does not calls #handle_menu_input if zipcode is invalid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+      expect(cli).not_to receive(:handle_menu_input)
+      cli.validate_zipcode(zip)
+    end 
+
+    it "calls #invalid_zipcode_response if zipcode is invalid" do 
+      allow(cli).to receive(:valid_zipcode?).with(zip).and_return(false)
+      expect(cli).to receive(:invalid_zipcode_response)
+      cli.validate_zipcode(zip)
     end 
   end 
 
@@ -229,5 +266,4 @@ RSpec.describe CLI do
       expect(output).to eq("Goodbye\n")
     end
   end 
-
 end
