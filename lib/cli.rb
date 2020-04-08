@@ -19,7 +19,8 @@ class Weather::CLI
   end 
 
   def valid_zipcode?(zipcode)
-    zipcode.length == 5 
+    zipcode.length == 5 && zipcode.to_i > 0 
+
   end 
   
   def invalid_zipcode_response
@@ -47,16 +48,27 @@ class Weather::CLI
 
   def handle_menu_input(zipcode)
     input = gets.strip
-    forecast = Weather::API.get_forecast(zipcode)
-    forecast.print_temperature if input == "1"
-    forecast.print_temp_range if input == "2"
-    forecast.print_humidity if input == "3"
-    forecast.print_everything if input == "4"
-    if input == "5"
-      puts "Goodbye"
-    else 
-      display_menu
-      handle_menu_input(zipcode) 
+    forecast_response = Weather::API.get_forecast(zipcode)
+    if forecast_response 
+      forecast = Weather::Forecast.new(
+        forecast_response[:temp], 
+        forecast_response[:feels_like], 
+        forecast_response[:temp_min], 
+        forecast_response[:temp_max], 
+        forecast_response[:humidity]
+      )
+      forecast.print_temperature if input == "1"
+      forecast.print_temp_range if input == "2"
+      forecast.print_humidity if input == "3"
+      forecast.print_everything if input == "4"
+      if input == "5"
+        puts "Goodbye"
+      else 
+        display_menu
+        handle_menu_input(zipcode) 
+      end 
+    else
+      invalid_zipcode_response
     end 
   end 
 
