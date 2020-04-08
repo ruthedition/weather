@@ -26,7 +26,8 @@ class Weather::CLI
   end 
 
   def valid_zipcode?
-    zipcode.length == 5 && zipcode.to_i > 0 
+    zipcode.length == 5 && zipcode.to_i > 0
+
   end 
   
   def invalid_zipcode_response
