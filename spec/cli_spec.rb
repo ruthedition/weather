@@ -26,7 +26,7 @@ RSpec.describe Weather::CLI do
     it "calls #validate_zipcode" do 
       expect(cli).to receive(:validate_zipcode)
       cli.call
-    end 
+    end
   end 
 
   describe "#greeting" do 

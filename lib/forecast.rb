@@ -1,3 +1,4 @@
+require './lib/api'
 
 class Weather::Forecast
 
