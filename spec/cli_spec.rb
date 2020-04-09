@@ -87,11 +87,6 @@ RSpec.describe Weather::CLI do
       expect(cli.valid_zipcode?).to eq(false)
     end
 
-    # it "returns false if zipcode has letters" do 
-    #   cli.zipcode = "23sd2"
-    #   expect(cli.valid_zipcode?).to eq(false)
-    # end
-
   end 
 
   describe "#invalid_zipcode_response" do 
@@ -252,6 +247,11 @@ RSpec.describe Weather::CLI do
     cli = Weather::CLI.new
     forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
     cli.forecast = forecast
+
+    before do
+      allow($stdout).to receive(:puts)
+      allow(cli).to receive(:display_menu)
+    end 
 
     it "calls #print_temperature if option 1." do 
       allow(forecast).to receive(:print_temperature)

@@ -75,7 +75,6 @@ class Weather::CLI
       puts "\nGoodbye" 
     elsif (1..4).include?(input.to_i)
       print_forecast(input)
-      display_menu
     else
       puts "\nInvalid option\n"
       display_menu
@@ -87,6 +86,7 @@ class Weather::CLI
     forecast.print_temp_range if input == "2"
     forecast.print_humidity if input == "3"
     forecast.print_everything if input == "4" 
+    display_menu
   end 
 
 end 

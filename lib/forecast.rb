@@ -10,7 +10,6 @@ class Weather::Forecast
     @lowest_temperature = lowest_temperature
     @highest_temperature = highest_temperature
     @humidity = humidity 
-
   end
 
   def print_temperature
