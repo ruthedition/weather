@@ -1,5 +1,4 @@
 require_relative "./api.rb"
-require 'pry'
 
 class Weather::CLI
 

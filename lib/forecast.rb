@@ -1,4 +1,4 @@
-require './lib/api'
+require_relative "./api.rb"
 
 class Weather::Forecast
 
