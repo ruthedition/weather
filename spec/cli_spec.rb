@@ -135,22 +135,40 @@ RSpec.describe Weather::CLI do
       cli.validate_zipcode
     end
 
-    it "calls #display_menu if zipcode is valid" do 
-      allow(cli).to receive(:valid_zipcode?).and_return(true)
-      expect(cli).to receive(:display_menu)
-      cli.validate_zipcode
-    end 
+    # it "calls #display_menu if zipcode is valid" do 
+    #   allow(cli).to receive(:valid_zipcode?).and_return(true)
+    #   expect(cli).to receive(:display_menu)
+    #   cli.validate_zipcode
+    # end 
 
-    it "does not call #display_menu if zipcode is invalid" do 
-      allow(cli).to receive(:valid_zipcode?).and_return(false)
-      expect(cli).not_to receive(:display_menu)
-      cli.validate_zipcode
-    end
+    # it "does not call #display_menu if zipcode is invalid" do 
+    #   allow(cli).to receive(:valid_zipcode?).and_return(false)
+    #   expect(cli).not_to receive(:display_menu)
+    #   cli.validate_zipcode
+    # end
 
     it "calls #invalid_zipcode_response if zipcode is invalid" do 
       allow(cli).to receive(:valid_zipcode?).and_return(false)
       expect(cli).to receive(:invalid_zipcode_response)
       cli.validate_zipcode
+    end 
+  end 
+
+  describe "#get_forecast" do 
+    cli = Weather::CLI.new
+    forecast_response = {
+      temp: 282.55,
+      feels_like: 281.86,
+      temp_min: 280.37,
+      temp_max: 284.26,
+      humidity: 100
+    }
+   
+    it "calls #display_menu" do 
+      allow(Weather::API).to receive(:get_forecast).and_return(forecast_response)
+      allow(cli).to receive(:display_menu)  
+      expect(cli).to receive(:display_menu)
+      cli.get_forecast
     end 
   end 
 
@@ -163,12 +181,7 @@ RSpec.describe Weather::CLI do
       allow(cli).to receive(:handle_menu_input)  
       allow(cli).to receive(:get_forecast)  
     end 
-
-    it "calls #get_forecast" do 
-      expect(cli).to receive(:get_forecast)
-      cli.display_menu
-    end 
-
+    
     it "outputs the menu option today's temperature" do 
       output = capture_puts{ cli.display_menu }
       expect(output).to include("1. The temperature for today.")

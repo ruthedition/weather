@@ -16,7 +16,6 @@ RSpec.describe Weather::API do
       response = Weather::API.get_forecast("75024")
       expect(response[:temp]).to eq(282.55)
     end 
-
   end 
   
 end 

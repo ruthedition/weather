@@ -38,20 +38,10 @@ class Weather::CLI
 
   def validate_zipcode
     if valid_zipcode?
-      display_menu
+      get_forecast
     else 
       invalid_zipcode_response   
     end   
-  end 
-
-  def display_menu
-    get_forecast
-    puts "\n1. The temperature for today."
-    puts "2. The highs and lows for today."
-    puts "3. The humidity today."
-    puts "4. Everything for today's forecast."
-    puts "5. Exit"
-    handle_menu_input
   end 
 
   def get_forecast
@@ -64,10 +54,23 @@ class Weather::CLI
         forecast_response[:temp_max], 
         forecast_response[:humidity]
       )
+      display_menu
     else
       invalid_zipcode_response
     end 
   end 
+  
+  def display_menu
+    puts "\nWhat would you like to see today?"
+    puts "\n1. The temperature for today."
+    puts "2. The highs and lows for today."
+    puts "3. The humidity today."
+    puts "4. Everything for today's forecast."
+    puts "5. Exit"
+    handle_menu_input
+  end 
+
+  
 
   def handle_menu_input
     input = gets.strip
