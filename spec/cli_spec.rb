@@ -232,13 +232,13 @@ RSpec.describe Weather::CLI do
     it "outputs a closing when user selects 5" do 
       allow(cli).to receive(:gets).and_return("5\n")
       output = capture_puts{ cli.handle_menu_input }
-      expect(output).to eq("Goodbye\n")
+      expect(output).to eq("\nGoodbye\n")
     end
 
     it "outputs a closing when user enters exit" do 
       allow(cli).to receive(:gets).and_return("exit\n")
       output = capture_puts{ cli.handle_menu_input }
-      expect(output).to eq("Goodbye\n")
+      expect(output).to eq("\nGoodbye\n")
     end 
 
     it "outputs error if user input is not valid" do

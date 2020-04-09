@@ -3,7 +3,7 @@ require 'pry'
 
 class Weather::CLI
 
-  attr_accessor :zipcode, :forecast
+  attr_accessor :zipcode, :forecast, :input
 
   def intialize 
     @zipcode = nil
@@ -22,7 +22,7 @@ class Weather::CLI
   def call
     greeting
     enter_zipcode
-    validate_zipcode
+    validate_zipcode 
   end 
 
   def valid_zipcode?
@@ -71,11 +71,11 @@ class Weather::CLI
 
   def handle_menu_input
     input = gets.strip
-    if (1..4).include?(input.to_i)
+    if input == "5" || input.downcase == "exit" 
+      puts "\nGoodbye" 
+    elsif (1..4).include?(input.to_i)
       print_forecast(input)
       display_menu
-    elsif input == "5" || input.downcase == "exit" 
-      puts "Goodbye"
     else
       puts "\nInvalid option\n"
       display_menu
