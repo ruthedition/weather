@@ -8,29 +8,35 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Prerequisites
 
-What things you need to install the software and how to install them
+What things you need to install the software and how to install them.
+
+An API Key from https://openweathermap.org/api
+Create a .env file in the root directory. 
+Paste the following line into file 
+
+    export API_KEY=<YOUR API KEY>
+    
 
 ## Installation
 
-    clone
-    cd into file 
-    bundle install 
-
+    git clone https://github.com/Rkebede/weather
+    cd weather/ 
+     
 ## Usage
 
 Use the command below and follow interactive prompts
 
-ruby bin/weather_forecast
+    ruby bin/weather_forecast
 
 ## Running Tests
 
 To run automated tests for api type the below 
 
-rspec api_spec
+    rspec ./spec/api_spec.rb
 
 To run automated tests for cli type the below 
 
-rspec cli
+    rspec ./spec/cli_spec.rb
 
 ## Development
 
