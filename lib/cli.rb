@@ -53,6 +53,7 @@ class Weather::CLI
         forecast_response[:temp_max], 
         forecast_response[:humidity]
       )
+      puts "\nWeather forecast options for today:"
       display_menu
     else
       invalid_zipcode_response
@@ -60,7 +61,6 @@ class Weather::CLI
   end 
   
   def display_menu
-    puts "\nWhat would you like to see today?"
     puts "\n1. The temperature for today."
     puts "2. The highs and lows for today."
     puts "3. The humidity today."
@@ -84,11 +84,22 @@ class Weather::CLI
   end 
 
   def print_forecast(input)
-    forecast.print_temperature if input == "1"
-    forecast.print_temp_range if input == "2"
-    forecast.print_humidity if input == "3"
-    forecast.print_everything if input == "4" 
-    display_menu
+    if (1..3).include?(input.to_i)
+      forecast.print_temperature if input == "1"
+      forecast.print_temp_range if input == "2"
+      forecast.print_humidity if input == "3"
+      puts "\nWould you like to see anything else?"
+      display_menu
+    else    
+      forecast.print_everything if input == "4" 
+      puts "That's the weather for today! Would you like to exit? (y/n)"
+      input = gets.strip.downcase
+      if input == "y" || input == "yes"
+        puts "\nGoodbye"
+      else 
+        display_menu
+      end 
+    end 
   end 
 
 end 

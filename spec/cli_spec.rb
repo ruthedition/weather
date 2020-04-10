@@ -133,19 +133,7 @@ RSpec.describe Weather::CLI do
     it "calls #valid_zipcode? with user input" do 
       expect(cli).to receive(:valid_zipcode?)
       cli.validate_zipcode
-    end
-
-    # it "calls #display_menu if zipcode is valid" do 
-    #   allow(cli).to receive(:valid_zipcode?).and_return(true)
-    #   expect(cli).to receive(:display_menu)
-    #   cli.validate_zipcode
-    # end 
-
-    # it "does not call #display_menu if zipcode is invalid" do 
-    #   allow(cli).to receive(:valid_zipcode?).and_return(false)
-    #   expect(cli).not_to receive(:display_menu)
-    #   cli.validate_zipcode
-    # end
+    end 
 
     it "calls #invalid_zipcode_response if zipcode is invalid" do 
       allow(cli).to receive(:valid_zipcode?).and_return(false)
@@ -263,31 +251,61 @@ RSpec.describe Weather::CLI do
 
     before do
       allow($stdout).to receive(:puts)
+      allow(cli).to receive(:gets)
       allow(cli).to receive(:display_menu)
+      allow(forecast).to receive(:print_temperature)
+      allow(forecast).to receive(:print_temp_range)
+      allow(forecast).to receive(:print_humidity)
+      allow(forecast).to receive(:print_everything)
     end 
 
     it "calls #print_temperature if option 1." do 
-      allow(forecast).to receive(:print_temperature)
       expect(forecast).to receive(:print_temperature)
       cli.print_forecast("1")
     end
 
     it "calls #print_temp_range if option 2." do 
-      allow(forecast).to receive(:print_temp_range)
       expect(forecast).to receive(:print_temp_range)
       cli.print_forecast("2")
     end
 
     it "calls #print_humidity if option 3." do 
-      allow(forecast).to receive(:print_humidity)
       expect(forecast).to receive(:print_humidity)
       cli.print_forecast("3")
     end
 
+    it "outputs if user wants more information" do
+      output = capture_puts{ cli.print_forecast("2") }
+      expect(output).to eq("\nWould you like to see anything else?\n")    
+    end 
+
+    it "calls #display_menu if user wants to see more" do
+      expect(cli).to receive(:display_menu)
+      cli.print_forecast("2") 
+    end 
+
     it "calls #print_everything if option 4." do 
-      allow(forecast).to receive(:print_everything)
+      allow(cli).to receive(:gets).and_return("4")
       expect(forecast).to receive(:print_everything)
       cli.print_forecast("4")
+    end 
+
+    it "outputs if user has seen all options" do
+      allow(cli).to receive(:gets).and_return("4")
+      output = capture_puts{ cli.print_forecast("4") }
+      expect(output).to eq("That's the weather for today! Would you like to exit? (y/n)\n")    
+    end 
+
+    it "outputs a closing when user selects y" do 
+      allow(cli).to receive(:gets).and_return("y")
+      output = capture_puts{ cli.print_forecast("y") }
+      expect(output).to include("\nGoodbye")    
+    end
+
+    it "calls #display_menu if user does not want to exit" do
+      allow(cli).to receive(:gets).and_return("n")
+      expect(cli).to receive(:display_menu)
+      cli.print_forecast("n") 
     end 
   end 
 
