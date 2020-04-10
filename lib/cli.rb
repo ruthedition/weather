@@ -21,7 +21,11 @@ class Weather::CLI
   def call
     greeting
     enter_zipcode
-    validate_zipcode 
+    if valid_zipcode?
+      get_forecast
+    else 
+      invalid_zipcode_response   
+    end
   end 
 
   def valid_zipcode?
@@ -35,13 +39,13 @@ class Weather::CLI
     validate_zipcode
   end 
 
-  def validate_zipcode
-    if valid_zipcode?
-      get_forecast
-    else 
-      invalid_zipcode_response   
-    end   
-  end 
+  # def validate_zipcode
+  #   if valid_zipcode?
+  #     get_forecast
+  #   else 
+  #     invalid_zipcode_response   
+  #   end   
+  # end 
 
   def get_forecast
     forecast_response = Weather::API.get_forecast(zipcode)
