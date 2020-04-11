@@ -18,34 +18,24 @@ class Weather::CLI
     @zipcode = gets.strip
   end 
 
-  def call
+  def start
     greeting
+    main
+  end 
+
+  def main
     enter_zipcode
     if valid_zipcode?
       get_forecast
     else 
-      invalid_zipcode_response   
+      puts "Invalid zipcode." 
+      start
     end
   end 
 
   def valid_zipcode?
     zipcode.length == 5 && zipcode.to_i > 0
-
   end 
-  
-  def invalid_zipcode_response
-    puts "Invalid zipcode."
-    enter_zipcode
-    validate_zipcode
-  end 
-
-  # def validate_zipcode
-  #   if valid_zipcode?
-  #     get_forecast
-  #   else 
-  #     invalid_zipcode_response   
-  #   end   
-  # end 
 
   def get_forecast
     forecast_response = Weather::API.get_forecast(zipcode)
@@ -60,7 +50,8 @@ class Weather::CLI
       puts "\nWeather forecast options for today:"
       display_menu
     else
-      invalid_zipcode_response
+      puts "Invalid zipcode." 
+      main
     end 
   end 
   
@@ -72,8 +63,6 @@ class Weather::CLI
     puts "5. Exit"
     handle_menu_input
   end 
-
-  
 
   def handle_menu_input
     input = gets.strip
