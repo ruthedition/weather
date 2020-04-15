@@ -88,7 +88,7 @@ class Weather::CLI
       forecast.print_everything if input == "4" 
       puts "That's the weather for today! Would you like to exit? (y/n)"
       input = gets.strip.downcase
-      if input == "y" || input == "yes"
+      if input == "y" || input == "yes" || input == "exit"
         puts "\nGoodbye"
       else 
         display_menu
