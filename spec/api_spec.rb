@@ -1,6 +1,6 @@
 RSpec.describe Weather::API do
 
-  describe "#get_forecast" do 
+  describe "#get_weather" do 
 
     it "returns a forecast from the API" do 
       response_body = {"main":
@@ -13,7 +13,7 @@ RSpec.describe Weather::API do
         }
       }
       allow(Weather::API).to receive(:call_api).and_return(response_body)
-      response = Weather::API.get_forecast("75024")
+      response = Weather::API.get_weather("75024")
       expect(response[:temp]).to eq(282.55)
     end 
   end 

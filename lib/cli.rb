@@ -22,7 +22,7 @@ class Weather::CLI
     if zipcode == "exit"
       puts "\nGoodbye"
     elsif valid_zipcode?
-      get_forecast
+      get_weather
     else 
       puts "Invalid zipcode." 
       main
@@ -38,8 +38,8 @@ class Weather::CLI
     zipcode.delete('^0-9').length == 5 && zipcode.to_i > 0
   end 
 
-  def get_forecast
-    forecast_response = Weather::API.get_forecast(zipcode)
+  def get_weather
+    forecast_response = Weather::API.get_weather(zipcode)
     if forecast_response 
       @forecast = Weather::Forecast.new(
         forecast_response[:temp], 
