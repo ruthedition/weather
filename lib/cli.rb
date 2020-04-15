@@ -23,7 +23,9 @@ class Weather::CLI
 
   def main
     enter_zipcode
-    if valid_zipcode?
+    if zipcode == "exit"
+      puts "\nGoodbye"
+    elsif valid_zipcode?
       get_forecast
     else 
       puts "Invalid zipcode." 

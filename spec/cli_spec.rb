@@ -52,7 +52,7 @@ RSpec.describe Weather::CLI do
     forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
 
     before do 
-      allow($stdout).to receive(:puts)    
+      allow($stdout).to receive(:puts) 
       allow(cli).to receive(:enter_zipcode)
       allow(cli).to receive(:valid_zipcode?).and_return(true)
       allow(cli).to receive(:display_menu)
@@ -64,12 +64,20 @@ RSpec.describe Weather::CLI do
       cli.main
     end
 
+    it "exits program" do
+      exit_cli = Weather::CLI.new
+      exit_cli.zipcode = "exit" 
+      expect(exit_cli).to receive(:enter_zipcode)
+      output = capture_puts{ exit_cli.main }
+      expect(output).to eq("\nGoodbye\n")
+    end  
+
     it "calls #valid_zipcode? with user input" do 
       expect(cli).to receive(:valid_zipcode?)
       cli.main
     end 
 
-    it "outputs invalid response if zipcode is invalid" do 
+    it "outputs invalid response if zipcode is invalid" do
       allow(cli).to receive(:valid_zipcode?).and_return(false,true)
       output = capture_puts{ cli.main }
       expect(output).to eq("Invalid zipcode.\n")

@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "cli"
+require "api"
 require "forecast"
 require 'httparty'
 
