@@ -1,24 +1,20 @@
 class Weather::CLI
 
-  attr_accessor :zipcode, :forecast, :input
+  attr_accessor :zipcode, :forecast
+  attr_writer :input
 
   def intialize 
     @zipcode = nil
     @forecast = nil
   end 
 
-  def greeting
-    puts "Welcome to Weather Today!\n\n"
-  end 
-
-  def enter_zipcode
-    puts "Please enter your zipcode. >"
-    @zipcode = gets.strip
-  end 
-
   def start
     greeting
     main
+  end 
+  
+  def greeting
+    puts "Welcome to Weather Today!\n\n"
   end 
 
   def main
@@ -31,6 +27,11 @@ class Weather::CLI
       puts "Invalid zipcode." 
       main
     end
+  end 
+
+  def enter_zipcode
+      puts "Please enter your zipcode or type 'exit' to leave. >"
+      @zipcode = gets.strip
   end 
 
   def valid_zipcode?

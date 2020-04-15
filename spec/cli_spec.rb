@@ -94,7 +94,7 @@ RSpec.describe Weather::CLI do
     
     it "outputs a prompt" do
       output = capture_puts{ cli.enter_zipcode }
-      expect(output).to include("Please enter your zipcode. >")
+      expect(output).to include("Please enter your zipcode or type 'exit' to leave. >")
     end 
 
     it "returns user input" do

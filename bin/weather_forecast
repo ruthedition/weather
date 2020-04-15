@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require "./config/version"
 require "./config/environment.rb"
 
 Weather::CLI.new.start
