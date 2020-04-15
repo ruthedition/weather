@@ -1,5 +1,4 @@
 require 'httparty'
-require_relative "./forecast"
 require 'json'
 
 class Weather::API

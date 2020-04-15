@@ -1,5 +1,3 @@
-require_relative "./api.rb"
-
 class Weather::CLI
 
   attr_accessor :zipcode, :forecast, :input
@@ -29,7 +27,7 @@ class Weather::CLI
       get_forecast
     else 
       puts "Invalid zipcode." 
-      start
+      main
     end
   end 
 

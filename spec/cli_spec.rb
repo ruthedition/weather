@@ -53,26 +53,24 @@ RSpec.describe Weather::CLI do
 
     before do 
       allow($stdout).to receive(:puts)    
-      allow(cli).to receive(:start)  
-      allow(cli).to receive(:gets)
-      allow(cli).to receive(:enter_zipcode).and_return(zipcode)
-      allow(cli).to receive(:valid_zipcode?)
+      allow(cli).to receive(:enter_zipcode)
+      allow(cli).to receive(:valid_zipcode?).and_return(true)
       allow(cli).to receive(:display_menu)
-      allow(cli).to receive(:handle_menu_input)
+      allow(cli).to receive(:get_forecast)
     end 
  
     it "calls #enter_zipcode" do 
       expect(cli).to receive(:enter_zipcode)
-      cli.enter_zipcode
+      cli.main
     end
 
     it "calls #valid_zipcode? with user input" do 
       expect(cli).to receive(:valid_zipcode?)
-      cli.valid_zipcode?
+      cli.main
     end 
 
     it "outputs invalid response if zipcode is invalid" do 
-      allow(cli).to receive(:valid_zipcode?).and_return(false)
+      allow(cli).to receive(:valid_zipcode?).and_return(false,true)
       output = capture_puts{ cli.main }
       expect(output).to eq("Invalid zipcode.\n")
     end  
