@@ -32,7 +32,7 @@ class Weather::CLI
   end 
 
   def valid_zipcode?
-    zipcode.length == 5 && zipcode.to_i > 0
+    zipcode.delete('^0-9').length == 5 && zipcode.to_i > 0
   end 
 
   def get_forecast
