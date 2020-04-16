@@ -69,7 +69,7 @@ class Weather::CLI
     input = gets.strip
     if input == "5" || input.downcase == "exit" 
       puts "\nGoodbye" 
-    elsif (1..4).include?(input.to_i)
+    elsif input.length == 1 && (1..4).include?(input.to_i)
       print_forecast(input)
     else
       puts "\nInvalid option\n"
