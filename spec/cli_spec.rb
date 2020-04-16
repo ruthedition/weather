@@ -2,20 +2,12 @@ RSpec.describe Weather::CLI do
 
   describe "#start" do 
     cli = Weather::CLI.new
-    # zipcode = "75024"
-    # cli.zipcode = zipcode
-    # forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
     
     before do 
       allow($stdout).to receive(:puts)    
       allow(cli).to receive(:greeting)
       allow(cli).to receive(:gets)
       allow(cli).to receive(:main)
-      # allow(cli).to receive(:enter_zipcode).and_return(zipcode)
-      # allow(cli).to receive(:valid_zipcode?)
-      # allow(cli).to receive(:display_menu)
-      # allow(cli).to receive(:handle_menu_input)
-      # allow(cli).to receive(:invalid_zipcode_response)
     end 
  
     it "calls #greeting" do 
