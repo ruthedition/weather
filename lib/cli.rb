@@ -41,6 +41,7 @@ class Weather::CLI
     puts "\nWould you like to see the weather for today or a 5 day forecast? Please select a number or 'exit' to leave."
     puts "\n1. Today's weather"
     puts "2. 5 day forecast"
+    puts "3. Type in 'coldest' to see the coldest day"
     input = gets.strip.downcase
     if input == "exit"
       puts "\nGoodbye"
@@ -48,6 +49,14 @@ class Weather::CLI
       get_weather
     elsif input == "2"
       get_forecast
+    elsif input == "3" || input == "coldest"
+      coldest_day = Weather::Forecast.coldest_day
+      if coldest_day
+       puts "The coldest day is #{coldest_day.date}. It will be #{coldest_day.temperature} degrees."
+      else
+        puts "No forecast selected"
+      end 
+      weather_or_forecast
     else 
       puts "\nInvalid option\n"
       weather_or_forecast

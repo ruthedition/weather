@@ -32,6 +32,11 @@ class Weather::Forecast
     tp @@all 
   end
 
+  def self.coldest_day
+    @@all.sort { |current, n | current.temperature <=> n.temperature }.first
+  end 
+
+
   def print_temperature
     puts "\nThe temperature #{date.split(",").first} is #{temperature}, but it feels like #{feels_like}.\n\n"
   end 
