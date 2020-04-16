@@ -24,8 +24,8 @@ class Weather::API
   def self.get_forecast(zipcode)
     response = call_api(zipcode, "forecast")
     if response[:list]
-      dates(response[:list]).map do |date, values|
-        day_avg = days_avg(values)
+      dates(response[:list]).map do |date, date_values|
+        day_avg = days_avg(date_values)
         day_avg[:date] = date
         day_avg
       end
@@ -33,20 +33,6 @@ class Weather::API
       puts response[:message]
     end 
   end
-
-  def self.days_avg(day) 
-    {
-      temp: "%.2f" % average(day[:temps]), 
-      feels_like: "%.2f" % average(day[:feels]), 
-      temp_min: "%.2f" % average(day[:highs]), 
-      temp_max: "%.2f" % average(day[:lows]), 
-      humidity: "%.2f" % average(day[:humidities])
-    }
-  end 
-
-  def self.average(array)
-    (array.reduce(:+) / array.size).round(2)
-  end 
 
   def self.dates(response_list)
     dates_hash = { }
@@ -66,5 +52,19 @@ class Weather::API
       dates_hash[date][:humidities] << item[:main][:humidity]
     end 
     dates_hash
+  end 
+
+  def self.days_avg(date_values) 
+    {
+      temp: "%.2f" % average(day[:temps]), 
+      feels_like: "%.2f" % average(day[:feels]), 
+      temp_min: "%.2f" % average(day[:highs]), 
+      temp_max: "%.2f" % average(day[:lows]), 
+      humidity: "%.2f" % average(day[:humidities])
+    }
+  end 
+
+  def self.average(array)
+    array.reduce(:+) / array.size
   end 
 end
