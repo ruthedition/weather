@@ -1,7 +1,6 @@
 class Weather::CLI
 
   attr_accessor :zipcode, :weather
-  attr_writer :input
 
   def intialize 
     @zipcode = nil

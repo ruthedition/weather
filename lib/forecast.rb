@@ -29,14 +29,7 @@ class Weather::Forecast
   end 
 
   def self.week_forecast
-      puts "               #{self.all[0].date} | #{self.all[1].date} | #{self.all[2].date} | #{self.all[3].date} | #{self.all[4].date}"
-      puts "               -------------------------------------------------------------------------------------------------------------------------------"
-      puts " Temperature:  |          #{self.all[0].temperature}         |         #{self.all[1].temperature}          |         #{self.all[2].temperature}            |         #{self.all[3].temperature}          |         #{self.all[4].temperature}         |"
-      puts " Feels Like:   |          #{self.all[0].feels_like}         |         #{self.all[1].feels_like}          |         #{self.all[2].feels_like}            |         #{self.all[3].feels_like}          |         #{self.all[4].feels_like}         |"
-      puts " High:         |          #{self.all[0].highest_temperature}         |         #{self.all[1].highest_temperature}          |         #{self.all[2].highest_temperature}            |         #{self.all[3].highest_temperature}          |         #{self.all[4].highest_temperature}         |"
-      puts " Low:          |          #{self.all[0].lowest_temperature}         |         #{self.all[1].lowest_temperature}          |         #{self.all[2].lowest_temperature}            |         #{self.all[3].lowest_temperature}          |         #{self.all[4].lowest_temperature}         |"
-      puts " Humidity:     |          #{self.all[0].humidity}         |         #{self.all[1].humidity}          |         #{self.all[2].humidity}            |         #{self.all[3].humidity}          |         #{self.all[4].humidity}         |"
-      puts "               -------------------------------------------------------------------------------------------------------------------------------"
+    tp @@all 
   end
 
   def print_temperature
