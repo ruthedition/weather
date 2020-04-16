@@ -96,21 +96,20 @@ class Weather::CLI
     Weather::Forecast.all.each_with_index do |forecast, index|
       puts "#{index + 1}. #{forecast.date}"
     end
-    puts "6. The forecast for the week"
-    puts "7. Exit"
+    puts "\nPlease type '0' for the whole week or 'exit' to leave."
     handle_forecast_menu_input
   end 
 
   def handle_forecast_menu_input
     input = gets.strip
-    if input == "7" || input.downcase == "exit" 
+    if input.downcase == "exit" 
       puts "\nGoodbye" 
-    elsif (1..5).include?(input.to_i)
+    elsif input.length == 1 && (1..6).include?(input.to_i)
       index = input.to_i - 1
       @weather = Weather::Forecast.all[index]
       puts "\nSelect what you would like to see for #{weather.date}"
       weather_menu
-    elsif input == "6"
+    elsif input == "0"
       Weather::Forecast.week_forecast
       puts "\nThat's the weather for this week! Would you like to exit? (y/n)"
       input = gets.strip.downcase
@@ -129,7 +128,7 @@ class Weather::CLI
     input = gets.strip
     if input == "5" || input.downcase == "exit" 
       puts "\nGoodbye" 
-    elsif (1..4).include?(input.to_i)
+    elsif input.length == 1 && (1..4).include?(input.to_i)
       print_weather(input)
     else
       puts "\nInvalid option\n"
