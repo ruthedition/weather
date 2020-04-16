@@ -80,9 +80,7 @@ class Weather::CLI
     forecast_responses = Weather::API.get_forecast(zipcode)
     if forecast_responses
       Weather::Forecast.all.clear
-      forecast_responses.each do |forecast_response|
-        Weather::Forecast.create(forecast_response)
-      end 
+      forecast_responses.each { |forecast_response| Weather::Forecast.create(forecast_response) } 
       forecast_menu 
     else 
       puts "Invalid zipcode."
@@ -92,9 +90,7 @@ class Weather::CLI
 
   def forecast_menu
     puts "\nWhat day would you like to see?\n\n"
-    Weather::Forecast.all.each_with_index do |forecast, index|
-      puts "#{index + 1}. #{forecast.date}"
-    end
+    Weather::Forecast.all.each.with_index(1) { |forecast, index| puts "#{index}. #{forecast.date}" }
     puts "\nPlease type '0' for the whole week or 'exit' to leave."
     handle_forecast_menu_input
   end 
