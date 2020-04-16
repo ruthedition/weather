@@ -49,7 +49,7 @@ RSpec.describe Weather::CLI do
     cli = Weather::CLI.new
     zipcode = "75024"
     cli.zipcode = zipcode
-    forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
+    forecast = Weather::Forecast.new("76", "73", "65", "80", "45" "dates")
 
     before do 
       allow($stdout).to receive(:puts) 
