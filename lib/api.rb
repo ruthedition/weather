@@ -56,11 +56,11 @@ class Weather::API
 
   def self.days_avg(date_values) 
     {
-      temp: "%.2f" % average(day[:temps]), 
-      feels_like: "%.2f" % average(day[:feels]), 
-      temp_min: "%.2f" % average(day[:highs]), 
-      temp_max: "%.2f" % average(day[:lows]), 
-      humidity: "%.2f" % average(day[:humidities])
+      temp: "%.2f" % average(date_values[:temps]), 
+      feels_like: "%.2f" % average(date_values[:feels]), 
+      temp_min: "%.2f" % average(date_values[:highs]), 
+      temp_max: "%.2f" % average(date_values[:lows]), 
+      humidity: "%.2f" % average(date_values[:humidities])
     }
   end 
 
