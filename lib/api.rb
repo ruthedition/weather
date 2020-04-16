@@ -12,7 +12,6 @@ class Weather::API
       response[:main]
     else
       puts response[:message]
-
     end
   end 
 
@@ -47,7 +46,6 @@ class Weather::API
 
   def self.average(array)
     (array.reduce(:+) / array.size).round(2)
-
   end 
 
   def self.dates(response_list)
@@ -69,10 +67,4 @@ class Weather::API
     end 
     dates_hash
   end 
-
 end
- 
-
-
-# https://api.openweathermap.org/data/2.5/forecast?zip=75035&units=imperial&appid=30eea60e74dda9ca8068a04a3a3dafaf
-

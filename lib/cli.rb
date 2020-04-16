@@ -47,10 +47,8 @@ class Weather::CLI
       puts "\nGoodbye"
     elsif input == "1"
       get_weather
-      weather_menu
     elsif input == "2"
       get_forecast
-      forecast_menu
     else 
       puts "\nInvalid option\n"
       weather_or_forecast
@@ -63,6 +61,7 @@ class Weather::CLI
       Weather::Forecast.all.clear
       @weather = Weather::Forecast.create(weather_response)
       puts "\nWeather forecast options for #{weather.date}:"
+      weather_menu
     else
       puts "Invalid zipcode." 
       main
@@ -84,9 +83,11 @@ class Weather::CLI
       Weather::Forecast.all.clear
       forecast_responses.each do |forecast_response|
         Weather::Forecast.create(forecast_response)
-      end  
+      end 
+      forecast_menu 
     else 
-      puts "Invalid zipcode." 
+      puts "Invalid zipcode."
+      main 
     end 
   end 
 
