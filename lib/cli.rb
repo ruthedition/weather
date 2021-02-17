@@ -1,6 +1,6 @@
 class Weather::CLI
 
-  attr_accessor :zipcode, :weather
+  attr_accessor :zipcode, :forecast
 
   def intialize 
     @zipcode = nil
@@ -29,8 +29,8 @@ class Weather::CLI
   end 
 
   def enter_zipcode
-      puts "Please enter your zipcode or type 'exit' to leave. >"
-      @zipcode = gets.strip
+    puts "Please enter your zipcode or type 'exit' to leave. >"
+    @zipcode = gets.strip
   end 
 
   def valid_zipcode?
@@ -124,7 +124,7 @@ class Weather::CLI
     if input == "5" || input.downcase == "exit" 
       puts "\nGoodbye" 
     elsif input.length == 1 && (1..4).include?(input.to_i)
-      print_weather(input)
+      print_forecast(input)
     else
       puts "\nInvalid option\n"
       weather_menu
@@ -149,6 +149,5 @@ class Weather::CLI
       end 
     end 
   end 
-
 end 
 
