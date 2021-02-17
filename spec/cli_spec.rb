@@ -41,14 +41,14 @@ RSpec.describe Weather::CLI do
     cli = Weather::CLI.new
     zipcode = "75024"
     cli.zipcode = zipcode
-    forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
+    forecast = Weather::Forecast.new("76", "73", "65", "80", "45", "Sunday, April 19, 2020")
 
     before do 
       allow($stdout).to receive(:puts) 
       allow(cli).to receive(:enter_zipcode)
       allow(cli).to receive(:valid_zipcode?).and_return(true)
       allow(cli).to receive(:display_menu)
-      allow(cli).to receive(:get_forecast)
+      allow(cli).to receive(:get_weather)
     end 
  
     it "calls #enter_zipcode" do 
@@ -121,7 +121,7 @@ RSpec.describe Weather::CLI do
 
   end 
 
-  describe "#get_forecast" do 
+  describe "#get_weather" do 
     cli = Weather::CLI.new
     forecast_response = {
       temp: 282.55,
@@ -133,41 +133,41 @@ RSpec.describe Weather::CLI do
    
     before do 
       allow($stdout).to receive(:puts)  
-      allow(Weather::API).to receive(:get_forecast).and_return(forecast_response)
+      allow(Weather::API).to receive(:get_weather).and_return(forecast_response)
       allow(cli).to receive(:display_menu) 
       allow(cli).to receive(:main)
     end 
 
-    it "calls API.get_forecast" do 
-      expect(Weather::API).to receive(:get_forecast)
-      cli.get_forecast
+    it "calls API.get_weather" do 
+      expect(Weather::API).to receive(:get_weather)
+      cli.get_weather
     end 
 
-    it "creates a forecast instance if API.get_forecast is valid" do
-      cli.get_forecast
+    it "creates a forecast instance if API.get_weather is valid" do
+      cli.get_weather
       expect(cli.forecast).to be_instance_of(Weather::Forecast)
     end 
 
     it "outputs weather forecast options for today" do
-      output = capture_puts{ cli.get_forecast }
+      output = capture_puts{ cli.get_weather }
       expect(output).to eq("\nWeather forecast options for today:\n")
     end 
 
     it "calls #display_menu" do 
       expect(cli).to receive(:display_menu)
-      cli.get_forecast
+      cli.get_weather
     end 
 
     it "outputs invalid response if forecast is nil" do 
-      allow(Weather::API).to receive(:get_forecast)
-      output = capture_puts{ cli.get_forecast }
+      allow(Weather::API).to receive(:get_weather)
+      output = capture_puts{ cli.get_weather }
       expect(output).to eq("Invalid zipcode.\n")
     end  
 
     it "calls #main if forecast is nil" do 
-      allow(Weather::API).to receive(:get_forecast)
+      allow(Weather::API).to receive(:get_weather)
       expect(cli).to receive(:main)
-      cli.get_forecast
+      cli.get_weather
     end  
     
   end 
@@ -179,7 +179,7 @@ RSpec.describe Weather::CLI do
       allow($stdout).to receive(:puts) 
       allow(cli).to receive(:gets)
       allow(cli).to receive(:handle_menu_input)  
-      allow(cli).to receive(:get_forecast)  
+      allow(cli).to receive(:get_weather)  
     end 
     
     it "outputs the menu option today's temperature" do 
@@ -216,12 +216,12 @@ RSpec.describe Weather::CLI do
   
   describe "#handle_menu_input" do
     cli = Weather::CLI.new
-    forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
-    cli.forecast = forecast
+    forecast = Weather::Forecast.new("76", "73", "65", "80", "45", "Sunday, April 19, 2020")
+    cli. = forecast
 
     before do 
       allow($stdout).to receive(:puts)
-      allow(Weather::API).to receive(:get_forecast).and_return(forecast)
+      allow(Weather::API).to receive(:get_weather).and_return(forecast)
       allow(cli).to receive(:gets).and_return("1\n","5\n")
       allow(cli).to receive(:display_menu)
     end 
@@ -258,7 +258,7 @@ RSpec.describe Weather::CLI do
 
   describe "#print_forecast" do
     cli = Weather::CLI.new
-    forecast = Weather::Forecast.new("76", "73", "65", "80", "45")
+    forecast = Weather::Forecast.new("76", "73", "65", "80", "45", "Sunday, April 19, 2020")
     cli.forecast = forecast
 
     before do
